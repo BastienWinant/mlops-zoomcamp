@@ -163,3 +163,8 @@ cython_debug/
 
 *.db
 *.bin
+*.yaml
+*.b
+*.xgb
+*.txt
+*MLMODEL
