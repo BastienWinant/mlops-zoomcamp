@@ -167,6 +167,7 @@ mlartifacts/
 outputs/
 mlruns.db
 **/basic_auth.db
+artifacts/
 
 # Mac
 .DS_Store
