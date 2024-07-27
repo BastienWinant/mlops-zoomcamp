@@ -282,3 +282,4 @@ gunicorn.conf.py
 
 *.bin
 *.db
+*.pkl
