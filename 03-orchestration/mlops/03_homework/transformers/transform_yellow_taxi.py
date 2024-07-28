@@ -39,7 +39,7 @@ def transform(data, *args, **kwargs):
     model = LinearRegression()
     model.fit(X_train, y_train)
 
-    return model
+    return {'preprocessor': dv, 'model': model}
 
 
 @test
@@ -47,5 +47,5 @@ def test_output(output, *args) -> None:
     """
     Template code for testing the output of the block.
     """
-    print(output.intercept_)
+    print(output['model'].intercept_)
     assert output is not None, 'The output is undefined'

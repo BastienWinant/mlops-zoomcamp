@@ -22,7 +22,8 @@ blocks:
   configuration:
     file_source:
       path: 03_homework/transformers/transform_yellow_taxi.py
-  downstream_blocks: []
+  downstream_blocks:
+  - register_yellow_taxi
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -35,6 +36,24 @@ blocks:
   upstream_blocks:
   - ingest_yellow_taxi
   uuid: transform_yellow_taxi
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: 03_homework/data_exporters/register_yellow_taxi.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: register_yellow_taxi
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - transform_yellow_taxi
+  uuid: register_yellow_taxi
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
