@@ -1,8 +1,6 @@
-import requests
-from io import BytesIO
-from typing import List
-
+import io
 import pandas as pd
+import requests
 
 if 'data_loader' not in globals():
     from mage_ai.data_preparation.decorators import data_loader
@@ -16,14 +14,12 @@ def load_data_from_api(*args, **kwargs):
     Template for loading data from API
     """
     url = f'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{kwargs["year"]}-{kwargs["month"]:02d}.parquet'
-    
     response = requests.get(url)
 
     if response.status_code != 200:
         raise Exception(response.text)
 
-    df = pd.read_parquet(BytesIO(response.content))
-
+    df = pd.read_parquet(io.BytesIO(response.content))
     return df
 
 

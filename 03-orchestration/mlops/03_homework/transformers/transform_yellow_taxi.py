@@ -1,3 +1,6 @@
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.linear_model import LinearRegression
+
 if 'transformer' not in globals():
     from mage_ai.data_preparation.decorators import transformer
 if 'test' not in globals():
@@ -19,13 +22,24 @@ def transform(data, *args, **kwargs):
     Returns:
         Anything (e.g. data frame, dictionary, array, int, str, etc.)
     """
-    data['duration'] = (data.tpep_dropoff_datetime - data.tpep_pickup_datetime).apply(lambda x: x.total_seconds() / 60)
-    data = data.loc[(data.duration >= 1) & (data.duration <= 60)]
+    data['duration'] = data.tpep_dropoff_datetime - data.tpep_pickup_datetime
+    data.duration = data.duration.dt.total_seconds() / 60
+
+    data = data.loc[(data.duration >= 1) & (data.duration <= 60), ]
 
     categorical = ['PULocationID', 'DOLocationID']
     data[categorical] = data[categorical].astype(str)
 
-    return data
+    data_dicts = data[categorical].to_dict(orient="records")
+
+    dv = DictVectorizer()
+    X_train = dv.fit_transform(data_dicts)
+    y_train = data.duration.values
+
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+
+    return model
 
 
 @test
@@ -33,4 +47,5 @@ def test_output(output, *args) -> None:
     """
     Template code for testing the output of the block.
     """
+    print(output.intercept_)
     assert output is not None, 'The output is undefined'
